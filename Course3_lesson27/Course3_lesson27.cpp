@@ -3,8 +3,11 @@
 #include <string>
 #include <algorithm>
 #include <functional>
+#include <fstream>
 
 using namespace std;
+
+string path = "List.txt";
 
 struct Car {
     string name;
@@ -68,6 +71,42 @@ public:
             }
         }
     }
+
+    void saveToFile() {
+        ofstream fout;
+        fout.open(path);
+        for (auto el : cars) {
+            fout << el.name << "\n";
+            fout << el.year << "\n";
+            fout << el.engineVolume << "\n";
+            fout << el.price << "\n";
+        }
+        fout.close();
+    }
+
+    void loadFromFile() {
+        ifstream fin;
+        fin.open(path);
+        if (!fin.is_open()) {
+            cout << "Error: Could not open file " << path << endl;
+            return;
+        }
+
+        cars.clear(); 
+
+        while (!fin.eof()) {
+            Car car;
+            getline(fin, car.name);
+            if (car.name.empty()) break; 
+            fin >> car.year >> car.engineVolume >> car.price;
+            fin.ignore(); 
+            cars.push_back(car);
+        }
+
+        fin.close();
+        cout << "Cars loaded from file successfully.\n";
+    }
+
 };
 
 int main() {
@@ -79,7 +118,8 @@ int main() {
 
     int choice;
     do {
-        cout << "\n1. Add Car\n2. Remove Car\n3. Display Cars\n4. Sort Cars\n5. Find Cars\n0. Exit\nChoice: ";
+        cout << "\n1. Add Car\n2. Remove Car\n3. Display Cars\n4. Sort Cars\n5. Find Cars\n6. Save to File\n7. Load from File\n0. Exit\nChoice: ";
+
         cin >> choice;
 
         switch (choice) {
@@ -174,6 +214,14 @@ int main() {
             }
             break;
         }
+        case 6:
+            salon.saveToFile();
+            cout << "Cars saved to file.\n";
+            break;
+        case 7:
+            salon.loadFromFile();
+            break;
+
         case 0:
             cout << "Exiting...\n";
             break;

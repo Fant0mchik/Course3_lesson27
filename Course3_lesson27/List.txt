@@ -1,0 +1,12 @@
+Toyota Corolla
+2020
+1.8
+20000
+Honda Civic
+2018
+2
+18000
+Ford Mustang
+2021
+5
+55000
